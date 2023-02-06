@@ -1,9 +1,7 @@
 /.venvp3107
 /__pycache__
 /dv_lib/__pycache__
-/testing/__pycache__
-/testing
-/training
+/data
 
 *.raw
 *.ply
