@@ -15,7 +15,6 @@ def dv_importFromDVCaliper(filepath, dropdup=False, T=False):
                 unique_keys, indices = np.unique(data[:, 0], return_index=True)
                 data = data[np.sort(indices)]
 
-            # depths = np.reshape(data[:, 0], (slices, 1))
             depths = data[:, 0]
             if T:
                 values = data[:, 1:].T
@@ -29,8 +28,7 @@ def dv_importFromDVCaliper(filepath, dropdup=False, T=False):
 
 
 def main():
-    depths, data = dv_importFromDVCaliper(
-        ".\data\\665\DVCaliper_Files\mianpass.radii.suppressed-both-45-pcnt.dvcaliper")
+    # depths, data = dv_importFromDVCaliper("")
     pass
 
 
