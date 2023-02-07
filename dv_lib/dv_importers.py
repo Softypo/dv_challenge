@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def dv_importFromRaw(filepath, T=False):
+def dv_importFromRaw(filepath, T=True):
 
     try:
         with open(filepath, 'rb') as f:
