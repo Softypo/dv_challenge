@@ -1,13 +1,14 @@
 import numpy as np
 
 
-def dv_importFromRaw(filepath, T=True):
+def dv_importFromVolume(filepath, RawVol=True, T=True):
 
     try:
+        dtype = np.uint16 if RawVol else np.uint8
         with open(filepath, 'rb') as f:
             RAW = f.read
             data = np.frombuffer(RAW(),
-                                 dtype=np.uint8,
+                                 dtype=dtype,
                                  offset=0).reshape(1280, 768, 768)
             if T:
                 values = data.T

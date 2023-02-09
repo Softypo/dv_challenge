@@ -7,7 +7,7 @@ def dv_importFromRaw(filepath, T=True):
         with open(filepath, 'rb') as f:
             RAW = f.read
             data = np.frombuffer(RAW(),
-                                 dtype=np.uint8,
+                                 dtype=np.ushort,
                                  offset=0).reshape(1280, 768, 768)
             if T:
                 values = data.T
