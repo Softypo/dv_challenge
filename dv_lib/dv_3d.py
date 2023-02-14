@@ -21,7 +21,7 @@ def preprocess_multiprocess(scan, chunksize):
 
     def preprocess_slice(slice):
         slice = cv.ximgproc.thinning(slice)
-        slice = cv.threshold(slice, 127, 255, cv.THRESH_BINARY)[1]
+        # slice = cv.threshold(slice, 127, 255, cv.THRESH_BINARY)[1]
         return slice
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
