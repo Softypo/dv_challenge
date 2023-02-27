@@ -1,0 +1,14 @@
+services:
+  mlenv:
+    build: .
+    volumes:
+      - .:/ml_env_bridge
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
