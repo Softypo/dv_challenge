@@ -1,8 +1,11 @@
 services:
   mlenv:
-    build: .
+    build:
+      context: .
+      args:
+        version: "latest-gpu"
     volumes:
-      - .:/ml_env_bridge
+      - bridge:/ml_env_bridge
     stdin_open: true
     tty: true
     deploy:
@@ -12,3 +15,5 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
+volumes:
+  bridge:
