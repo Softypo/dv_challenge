@@ -14,9 +14,9 @@ FROM tensorflow/tensorflow:${version}
 
 # USER www-data
 
-# RUN apt-get update && apt-get install -y \
-#     locales \
-#     && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    locales \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/ml_env_bridge
 
