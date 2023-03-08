@@ -5,6 +5,7 @@ services:
       context: .
       args:
         version: "latest-gpu"
+    command: bash
     volumes:
       - bridge:/ml_env_bridge
     stdin_open: true
