@@ -7,7 +7,7 @@ services:
         version: "latest-gpu"
     command: bash
     volumes:
-      - bridge:/ml_env_bridge
+      - bridge:/home/ml_env_bridge
     stdin_open: true
     tty: true
     deploy:
