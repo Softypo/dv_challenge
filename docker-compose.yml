@@ -9,12 +9,12 @@ services:
     volumes:
       # - type: volume
       #   source: bridge
-      #   target: /home/ml_env_bridge
+      #   target: /home/ml_env_vol
       #   volume:
       #     nocopy: false
       - type: bind
         source: ./
-        target: /home/ml_env2
+        target: /home/ml_env_bridge
     stdin_open: true
     tty: true
     deploy:
