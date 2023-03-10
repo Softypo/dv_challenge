@@ -1,8 +1,8 @@
 # This assumes the container is running on a system with a CUDA GPU
 ARG version
 
-ARG USER_ID=1000
-ARG GROUP_ID=1000
+# ARG USER_ID=1000
+# ARG GROUP_ID=1000
 
 FROM tensorflow/tensorflow:${version}
 
