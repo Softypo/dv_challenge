@@ -5,6 +5,7 @@ services:
       context: .
       args:
         version: "latest-gpu"
+    user: ${UID:-1000}:${GID:-1000}
     command: bash
     volumes:
       # - type: volume
