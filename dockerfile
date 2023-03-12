@@ -10,11 +10,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-get update && apt-get install git -y && \
     apt-get install ffmpeg libsm6 libxext6  -y
-#RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
-
-COPY requirements.txt ./
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /home/ml_env_bridge
 
@@ -39,6 +34,9 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 USER $USERNAME
 
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 #EXPOSE 8888
 
 ENTRYPOINT ["bash"]
