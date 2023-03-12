@@ -3,3 +3,4 @@ pandas
 pyvista
 open3d
 opencv-python
+opencv-contrib-python
