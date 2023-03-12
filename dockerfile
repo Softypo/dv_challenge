@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y \
     locales \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get update && apt-get install git -y && \
+    apt-get install ffmpeg libsm6 libxext6  -y
+#RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip
