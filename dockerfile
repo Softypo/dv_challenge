@@ -4,12 +4,13 @@ ARG version
 FROM tensorflow/tensorflow:${version}
 
 # RUN apt install ca-certificates -y
-RUN apt-get update && apt-get install -y \ 
-    locales \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y \ 
+#     locales \
+#     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install git -y && \
-    apt-get install ffmpeg libsm6 libxext6  -y
+    apt-get install ffmpeg libsm6 libxext6  -y && \
+    apt-get install htop -y
 
 WORKDIR /home/ml_env_bridge
 
@@ -39,5 +40,5 @@ RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 #EXPOSE 8888
 
-ENTRYPOINT ["bash"]
+ENTRYPOINT ["htop"]
 # CMD /bin/sh -c "while sleep 1000; do :; done"
