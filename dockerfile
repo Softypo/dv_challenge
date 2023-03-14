@@ -43,6 +43,6 @@ RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 #EXPOSE 8888
 
-ENTRYPOINT ["bash"]
-CMD ["htop"]
-#CMD /bin/sh -c "while sleep 1000; do :; done"
+#ENTRYPOINT ["bash"]
+RUN ["/bin/bash"]
+#CMD ["/bin/sh", "-c", "while sleep 1000; do :; done"]
