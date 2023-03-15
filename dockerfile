@@ -17,6 +17,10 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /home/ml_env_bridge
 
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
 ARG USERNAME=softypo
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
@@ -38,11 +42,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 USER $USERNAME
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
 #EXPOSE 8888
 
 #ENTRYPOINT ["bash"]
-RUN ["/bin/bash"]
-#CMD ["/bin/sh", "-c", "while sleep 1000; do :; done"]
+#RUN ["/bin/bash"]
+CMD ["htop"]
