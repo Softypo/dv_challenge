@@ -6,7 +6,7 @@ services:
       args:
         version: "latest-gpu"
     #user: ${UID:-1000}:${GID:-1000}
-    command: bash
+    #command: bash
     volumes:
       # - type: volume
       #   source: bridge
@@ -18,7 +18,7 @@ services:
         target: /home/ml_env_bridge
     stdin_open: true
     tty: true
-    #entrypoint: /bin/htop
+    #entrypoint: /bin/bash
     deploy:
       resources:
         reservations:

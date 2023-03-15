@@ -19,7 +19,7 @@ WORKDIR /home/ml_env_bridge
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 ARG USERNAME=softypo
 ARG USER_UID=1000
@@ -44,6 +44,5 @@ USER $USERNAME
 
 #EXPOSE 8888
 
-#ENTRYPOINT ["bash"]
-#RUN ["/bin/bash"]
-CMD ["htop"]
+#ENTRYPOINT ["bash", "-l", "-c"]
+CMD ["bash"]
