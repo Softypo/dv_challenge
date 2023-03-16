@@ -1,5 +1,6 @@
 /.venvp3107
 /.venv
+/.vscode
 /__pycache__
 /dv_lib/__pycache__
 /data

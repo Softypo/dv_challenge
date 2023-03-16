@@ -1,6 +1,6 @@
 numpy
 pandas
-pyvista
+pyvista[all,trame]
 open3d
 opencv-python
 opencv-contrib-python

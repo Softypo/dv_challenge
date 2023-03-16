@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     ffmpeg libsm6 libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN add-apt-repository ppa:flexiondotorg/nvtop && apt install nvtop
+
 # RUN apt-get update && apt-get install git -y && \
 #     apt-get install ffmpeg libsm6 libxext6  -y && \
 #     apt-get install htop -y
@@ -20,6 +22,9 @@ WORKDIR /home/ml_env_bridge
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install -r requirements.txt
+
+ENV PYVISTA_TRAME_SERVER_PROXY_PREFIX='/proxy/'
+ENV PYVISTA_TRAME_SERVER_PROXY_PREFIX="$JUPYTERHUB_SERVICE_PREFIX/proxy/"
 
 ARG USERNAME=softypo
 ARG USER_UID=1000

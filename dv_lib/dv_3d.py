@@ -6,10 +6,10 @@ from itertools import repeat
 
 def preprocess(scan):
     scan_pp = scan.copy()
-    scan_pp = np.where(scan_pp > scan.std(0)*2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp > scan.std(1)*2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp.T > scan.T.std(0)*2, scan_pp.T, 0.0).T
-    scan_pp = np.where(scan_pp > scan.std()*1, 255, 0)
+    scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
+    scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
+    scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
+    scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
     for i in range(scan_pp.shape[2]):
         slice = scan_pp[:, :, i]
@@ -20,14 +20,17 @@ def preprocess(scan):
 
 
 def preprocess_multiprocess(scan, chunksize):
-    z_index = scan.shape.index([unique for unique in list(
-        set(scan.shape)) if scan.shape.count(unique) == 1][0])
-    scan_pp = scan.copy() if z_index == 0 else scan.copy().T
+    z_index = scan.shape.index(
+        [unique for unique in list(set(scan.shape))
+         if scan.shape.count(unique) == 1][0]
+    )
+    scan = scan.T if z_index == 0 else scan
+    scan_pp = scan.copy().T if z_index == 0 else scan.copy()
 
-    scan_pp = np.where(scan_pp > scan.std(0)*2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp > scan.std(1)*2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp.T > scan.T.std(0)*2, scan_pp.T, 0.0).T
-    scan_pp = np.where(scan_pp > scan.std()*1, 255, 0)
+    scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
+    scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
+    scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
+    scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
 
     def preprocess_slice(slice):
@@ -36,13 +39,15 @@ def preprocess_multiprocess(scan, chunksize):
         return slice
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        scan_pp = [slice for slice in executor.map(
-            preprocess_slice, scan_pp, chunksize=chunksize)]
-    return np.array(scan_pp) if z_index == 0 else np.array(scan_pp).T
+        scan_pp = [
+            slice
+            for slice in executor.map(preprocess_slice, scan_pp, chunksize=chunksize)
+        ]
+    return np.array(scan_pp)
 
 
 def radial_normals(points, zdip=None, inward=False):
-    '''
+    """
     Compute radially distributed normals from the volume center over the xy plane
     where:
             points: is a numpy.array with shape (n,3)
@@ -54,7 +59,7 @@ def radial_normals(points, zdip=None, inward=False):
             chunksize (int defatul:1000): size of chunks for each paralel worker
 
             output: is a numpy.array with shape (n,3) containing the normals of each given point
-    '''
+    """
     i = -1 if inward else 1
     xmean = points[:, 0].mean()
     ymean = points[:, 1].mean()
@@ -62,16 +67,16 @@ def radial_normals(points, zdip=None, inward=False):
     dist = points[:, 2].max() - points[:, 2].min()
     normals = []
     for x, y, z in points:
-        azimuth = np.arctan2((x-xmean), (y-ymean))
-        dip = np.arcsinh((z-zmean)/dist) if zdip == None else zdip
-        normals.append([i*np.sin(azimuth), i*np.cos(azimuth), dip])
+        azimuth = np.arctan2((x - xmean), (y - ymean))
+        dip = np.arcsinh((z - zmean) / dist) if zdip == None else zdip
+        normals.append([i * np.sin(azimuth), i * np.cos(azimuth), dip])
     return np.array(normals)
 
 
 def normal(x, y, z, a, xmean, ymean, zmean, dist, zdip=None):
-    azimuth = np.arctan2((x-xmean), (y-ymean))
-    dip = np.arcsinh((z-zmean)/dist) if zdip == None else zdip
-    return a*np.sin(azimuth), a*np.cos(azimuth), dip
+    azimuth = np.arctan2((x - xmean), (y - ymean))
+    dip = np.arcsinh((z - zmean) / dist) if zdip == None else zdip
+    return a * np.sin(azimuth), a * np.cos(azimuth), dip
 
 
 def radial_normals_multiprocess(points, zdip=None, inward=False, chunksize=1000):
@@ -103,6 +108,20 @@ def radial_normals_multiprocess(points, zdip=None, inward=False, chunksize=1000)
     #     return a*np.sin(azimuth), a*np.cos(azimuth), dip
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        normals = [normal for normal in executor.map(normal, x, y, z, repeat(a), repeat(
-            xmean), repeat(ymean), repeat(zmean), repeat(dist), repeat(zdip), chunksize=chunksize)]
+        normals = [
+            normal
+            for normal in executor.map(
+                normal,
+                x,
+                y,
+                z,
+                repeat(a),
+                repeat(xmean),
+                repeat(ymean),
+                repeat(zmean),
+                repeat(dist),
+                repeat(zdip),
+                chunksize=chunksize,
+            )
+        ]
     return np.array(normals)
