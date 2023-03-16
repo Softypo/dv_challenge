@@ -44,5 +44,6 @@ USER $USERNAME
 
 #EXPOSE 8888
 
-#ENTRYPOINT ["bash", "-l", "-c"]
-CMD ["bash"]
+ENTRYPOINT ["bash"]
+#ENTRYPOINT ["bash", "-l", "-c", "htop"]
+#CMD ["bash"]
