@@ -5,18 +5,25 @@ from itertools import repeat
 
 
 def preprocess(scan):
-    scan_pp = scan.copy()
+    z_index = scan.shape.index(
+        [unique for unique in list(set(scan.shape))
+         if scan.shape.count(unique) == 1][0]
+    )
+    scan = scan.T if z_index == 0 else scan
+    scan_pp = scan.copy().T if z_index == 0 else scan.copy()
+
     scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
     scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
     scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
-    scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
+    #scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
+
     for i in range(scan_pp.shape[2]):
         slice = scan_pp[:, :, i]
         # slice = cv.fastNlMeansDenoising(slice,h=20,templateWindowSize=10,searchWindowSize=21)
         # slice = cv.threshold(slice,80,255,cv.THRESH_BINARY)[1]
         scan_pp[:, :, i] = cv.ximgproc.thinning(slice)
-    return scan_pp
+    return np.array(scan_pp)
 
 
 def preprocess_multiprocess(scan, chunksize):
@@ -30,7 +37,7 @@ def preprocess_multiprocess(scan, chunksize):
     scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
     scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
     scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
-    scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
+    #scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
 
     def preprocess_slice(slice):

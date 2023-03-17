@@ -7,6 +7,8 @@ services:
         version: "latest-gpu"
     #user: ${UID:-1000}:${GID:-1000}
     #command: bash
+    security_opt:
+      - 'seccomp:unconfined'
     volumes:
       # - type: volume
       #   source: bridge
