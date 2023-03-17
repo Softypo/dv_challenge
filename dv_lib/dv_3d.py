@@ -14,8 +14,8 @@ def preprocess(scan):
 
     scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
     scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
-    #scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
+    # scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
+    # scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
 
     for i in range(scan_pp.shape[2]):
@@ -36,8 +36,8 @@ def preprocess_multiprocess(scan, chunksize):
 
     scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
     scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
-    #scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
+    # scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
+    # scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
 
     def preprocess_slice(slice):
