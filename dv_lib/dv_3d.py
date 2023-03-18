@@ -4,7 +4,7 @@ import concurrent.futures
 from itertools import repeat
 
 
-def preprocess(scan):
+def preprocess(scan, stds=2):
     z_index = scan.shape.index(
         [unique for unique in list(set(scan.shape))
          if scan.shape.count(unique) == 1][0]
@@ -12,10 +12,10 @@ def preprocess(scan):
     scan = scan.T if z_index == 0 else scan
     scan_pp = scan.copy().T if z_index == 0 else scan.copy()
 
-    scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
-    # scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
-    # scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
+    scan_pp = np.where(scan_pp > scan.std(0) * stds, scan_pp, 0.0)
+    scan_pp = np.where(scan_pp > scan.std(1) * stds, scan_pp, 0.0)
+    # scan_pp = np.where(scan_pp.T > scan.T.std(0) * stds, scan_pp.T, 0.0).T
+    # scan_pp = np.where(scan_pp > scan.std() * stds, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
 
     for i in range(scan_pp.shape[2]):
@@ -26,7 +26,7 @@ def preprocess(scan):
     return np.array(scan_pp)
 
 
-def preprocess_multiprocess(scan, chunksize):
+def preprocess_multiprocess(scan, stds=2, chunksize=10000):
     z_index = scan.shape.index(
         [unique for unique in list(set(scan.shape))
          if scan.shape.count(unique) == 1][0]
@@ -34,10 +34,10 @@ def preprocess_multiprocess(scan, chunksize):
     scan = scan.T if z_index == 0 else scan
     scan_pp = scan.copy().T if z_index == 0 else scan.copy()
 
-    scan_pp = np.where(scan_pp > scan.std(0) * 2, scan_pp, 0.0)
-    scan_pp = np.where(scan_pp > scan.std(1) * 2, scan_pp, 0.0)
-    # scan_pp = np.where(scan_pp.T > scan.T.std(0) * 2, scan_pp.T, 0.0).T
-    # scan_pp = np.where(scan_pp > scan.std() * 1, 255, 0)
+    scan_pp = np.where(scan_pp > scan.std(0) * stds, scan_pp, 0.0)
+    scan_pp = np.where(scan_pp > scan.std(1) * stds, scan_pp, 0.0)
+    # scan_pp = np.where(scan_pp.T > scan.T.std(0) * stds, scan_pp.T, 0.0).T
+    # scan_pp = np.where(scan_pp > scan.std() * stds, 255, 0)
     scan_pp = np.array(scan_pp, dtype=np.uint8)
 
     def preprocess_slice(slice):
