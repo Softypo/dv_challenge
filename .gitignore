@@ -4,6 +4,6 @@
 /__pycache__
 /dv_lib/__pycache__
 /data
-
+/sam
 *.raw
 *.ply
